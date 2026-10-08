@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "AI Answer Grader"
+description = "An academic evaluation dashboard for grading student exam answers against teacher rubrics, comparing AI and teacher marks, managing questions, and analyzing fairness across answer length, concept coverage, and accuracy."
+version = "1.0.0"
+id = "artifacts/answer-grader"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21614
+
+[services.development]
+run = "pnpm --filter @workspace/answer-grader run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/answer-grader", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/answer-grader/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21614"
+BASE_PATH = "/"
