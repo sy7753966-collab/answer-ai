@@ -1,22 +1,22 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: API for the AI Answer Grader dashboard
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
-    description: Health operations
+  - name: questions
+  - name: answers
+  - name: analytics
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +24,274 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /questions:
+    get:
+      operationId: listQuestions
+      tags: [questions]
+      summary: List exam questions
+      responses:
+        "200":
+          description: Questions
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Question" }
+    post:
+      operationId: createQuestion
+      tags: [questions]
+      summary: Create an exam question and rubric
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/QuestionInput" }
+      responses:
+        "201":
+          description: Created question
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Question" }
+  /questions/{id}:
+    get:
+      operationId: getQuestion
+      tags: [questions]
+      summary: Get a question and rubric
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: integer } }
+      responses:
+        "200":
+          description: Question
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Question" }
+        "404": { description: Not found }
+    put:
+      operationId: updateQuestion
+      tags: [questions]
+      summary: Update a question and rubric
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/QuestionInput" }
+      responses:
+        "200":
+          description: Updated question
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Question" }
+        "404": { description: Not found }
+    delete:
+      operationId: deleteQuestion
+      tags: [questions]
+      summary: Delete a question
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: integer } }
+      responses:
+        "204": { description: Deleted }
+        "404": { description: Not found }
+  /answers:
+    get:
+      operationId: listAnswers
+      tags: [answers]
+      summary: List submitted and benchmark answers
+      parameters:
+        - { in: query, name: questionId, required: false, schema: { type: integer } }
+      responses:
+        "200":
+          description: Answers
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Answer" }
+    post:
+      operationId: createAnswer
+      tags: [answers]
+      summary: Submit and grade an answer using the teacher rubric
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AnswerInput" }
+      responses:
+        "201":
+          description: Evaluated answer
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Answer" }
+  /answers/{id}:
+    get:
+      operationId: getAnswer
+      tags: [answers]
+      summary: Get detailed answer evaluation
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: integer } }
+      responses:
+        "200":
+          description: Evaluation
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Answer" }
+        "404": { description: Not found }
+  /answers/{id}/teacher-score:
+    patch:
+      operationId: updateTeacherScore
+      tags: [answers]
+      summary: Record a teacher score for comparison
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/TeacherScoreInput" }
+      responses:
+        "200":
+          description: Updated answer
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Answer" }
+        "404": { description: Not found }
+  /dashboard:
+    get:
+      operationId: getDashboard
+      tags: [analytics]
+      summary: Get dashboard metrics and recent answers
+      responses:
+        "200":
+          description: Dashboard metrics
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Dashboard" }
+  /analytics/fairness:
+    get:
+      operationId: getFairnessAnalytics
+      tags: [analytics]
+      summary: Calculate fairness analytics from available answers
+      responses:
+        "200":
+          description: Fairness analysis
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FairnessAnalytics" }
 components:
   schemas:
     HealthStatus:
       type: object
       properties:
-        status:
-          type: string
-      required:
-        - status
-
+        status: { type: string }
+      required: [status]
+    MarkingPoint:
+      type: object
+      required: [description, marks, keywords, alternatives]
+      properties:
+        description: { type: string }
+        marks: { type: integer, minimum: 1 }
+        keywords: { type: array, items: { type: string } }
+        alternatives: { type: array, items: { type: string } }
+    ConceptGroup:
+      type: object
+      required: [name, alternatives]
+      properties:
+        name: { type: string }
+        alternatives: { type: array, items: { type: string } }
+    QuestionInput:
+      type: object
+      required: [question, subject, marks, difficulty, questionType, timeAllowed, referenceAnswer, markingScheme, concepts]
+      properties:
+        question: { type: string, minLength: 1 }
+        subject: { type: string, minLength: 1 }
+        marks: { type: integer, minimum: 1 }
+        difficulty: { type: string }
+        questionType: { type: string }
+        timeAllowed: { type: integer, minimum: 1 }
+        referenceAnswer: { type: string }
+        markingScheme: { type: array, items: { $ref: "#/components/schemas/MarkingPoint" } }
+        concepts: { type: array, items: { $ref: "#/components/schemas/ConceptGroup" } }
+    Question:
+      allOf:
+        - $ref: "#/components/schemas/QuestionInput"
+        - type: object
+          required: [id, attempts, averageScore]
+          properties:
+            id: { type: integer }
+            attempts: { type: integer }
+            averageScore: { type: number }
+    AnswerInput:
+      type: object
+      required: [questionId, studentName, answerText]
+      properties:
+        questionId: { type: integer }
+        studentName: { type: string, minLength: 1 }
+        answerText: { type: string, minLength: 1 }
+    TeacherScoreInput:
+      type: object
+      required: [teacherScore]
+      properties:
+        teacherScore: { type: integer, minimum: 0 }
+    PointResult:
+      type: object
+      required: [description, marks, awarded, matched, feedback]
+      properties:
+        description: { type: string }
+        marks: { type: integer }
+        awarded: { type: integer }
+        matched: { type: boolean }
+        feedback: { type: string }
+    Answer:
+      type: object
+      required: [id, questionId, studentName, answerText, wordCount, aiScore, teacherScore, scoreGap, absoluteGap, keywordCoverage, conceptCoverage, relevance, accuracy, explanationQuality, pointResults, missingConcepts, matchedConcepts, incorrectStatements, feedback, benchmark, createdAt]
+      properties:
+        id: { type: integer }
+        questionId: { type: integer }
+        studentName: { type: string }
+        answerText: { type: string }
+        wordCount: { type: integer }
+        aiScore: { type: integer }
+        teacherScore: { type: [integer, "null"] }
+        scoreGap: { type: [integer, "null"] }
+        absoluteGap: { type: [integer, "null"] }
+        keywordCoverage: { type: number }
+        conceptCoverage: { type: number }
+        relevance: { type: number }
+        accuracy: { type: number }
+        explanationQuality: { type: number }
+        pointResults: { type: array, items: { $ref: "#/components/schemas/PointResult" } }
+        missingConcepts: { type: array, items: { type: string } }
+        matchedConcepts: { type: array, items: { type: string } }
+        incorrectStatements: { type: array, items: { type: string } }
+        feedback: { type: string }
+        benchmark: { type: boolean }
+        createdAt: { type: string, format: date-time }
+    Dashboard:
+      type: object
+      required: [totalQuestions, attemptedQuestions, totalAnswers, averageAiScore, averageTeacherScore, averageGap, agreementPercent, keywordCoverage, conceptCoverage, recentAnswers]
+      properties:
+        totalQuestions: { type: integer }
+        attemptedQuestions: { type: integer }
+        totalAnswers: { type: integer }
+        averageAiScore: { type: number }
+        averageTeacherScore: { type: number }
+        averageGap: { type: number }
+        agreementPercent: { type: number }
+        keywordCoverage: { type: number }
+        conceptCoverage: { type: number }
+        recentAnswers: { type: array, items: { $ref: "#/components/schemas/Answer" } }
+    FairnessAnalytics:
+      type: object
+      required: [answers, meanAbsoluteError, agreementRate, overestimationRate, underestimationRate, aiTeacherCorrelation, wordAiCorrelation, wordTeacherCorrelation, detectedBiases, conclusion]
+      properties:
+        answers: { type: array, items: { $ref: "#/components/schemas/Answer" } }
+        meanAbsoluteError: { type: number }
+        agreementRate: { type: number }
+        overestimationRate: { type: number }
+        underestimationRate: { type: number }
+        aiTeacherCorrelation: { type: number }
+        wordAiCorrelation: { type: number }
+        wordTeacherCorrelation: { type: number }
+        detectedBiases: { type: array, items: { type: string } }
+        conclusion: { type: string }
