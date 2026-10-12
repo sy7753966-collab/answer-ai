@@ -1,0 +1,1 @@
+- [AI Answer Grader scope](answer-grader-visual-scope.md) — preserve its teacher-facing assessment workflows and keep visual-refresh work presentation-only.
