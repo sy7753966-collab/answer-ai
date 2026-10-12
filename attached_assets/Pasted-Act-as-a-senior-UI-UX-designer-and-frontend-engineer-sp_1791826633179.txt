@@ -1,0 +1,214 @@
+Act as a senior UI/UX designer and frontend engineer specialising in professional SaaS dashboards, educational technology platforms, and enterprise-grade web applications.
+
+I have an existing website called **AI Answer Grader**, built in Replit. It is a functional assessment platform with an Overview dashboard, Question Bank, Evaluations, Fairness Lab, Rubric Studio, Reports, and Scoring Method pages.
+
+I want you to **professionally revamp the existing UI without rebuilding the website**.
+
+### 1. Critical requirement: Preserve the existing application
+
+Before making any changes, inspect the existing codebase, identify the frontend framework, component structure, styling system, and reusable UI components.
+
+- Do not rebuild the application from scratch.
+- Do not replace the current architecture or introduce a new framework.
+- Do not remove or rename existing routes, pages, components, database tables, APIs, or backend services.
+- Do not change grading logic, scoring algorithms, rubric rules, data models, authentication, or application behaviour.
+- Do not remove any existing functionality or dashboard metrics.
+- Do not replace real data with dummy data.
+- Preserve existing navigation, filters, search, forms, buttons, charts, tables, and interactions.
+- Reuse and refactor existing components wherever possible.
+- Make focused changes to typography, CSS, spacing, colours, borders, component styling, and responsive layouts.
+- Keep the changes incremental and compatible with the existing codebase.
+
+If a component already works, improve its appearance instead of rewriting its functionality.
+
+### 2. Design direction: Professional, minimal, trustworthy SaaS
+
+Transform the visual appearance into a polished, modern educational technology product suitable for teachers, schools, colleges, and institutional assessment teams.
+
+The design should feel:
+- Professional and credible
+- Clean, minimal, and structured
+- Data-focused and easy to scan
+- Consistent across every page
+- Accessible and comfortable for long working sessions
+- Similar in visual quality to mature B2B SaaS products, not an AI-generated template
+
+Avoid flashy gradients, excessive decorative shapes, oversized headings, unnecessary animations, glassmorphism, excessive rounded corners, and generic AI dashboard styling.
+
+### 3. Typography overhaul
+
+Replace the current typography system with a consistent, modern sans-serif font system.
+
+Preferred fonts:
+- Primary font: Inter
+- Fallback: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif
+
+Use a restrained, consistent type scale:
+- Main page headings: 26–30px, semibold
+- Section headings: 17–20px, semibold
+- Card titles: 13–15px, medium
+- Body text: 14px, regular
+- Table content: 13–14px
+- Labels and metadata: 11–12px
+- Buttons and navigation: 13–14px, medium or semibold
+
+Use bold weights selectively. Remove the oversized editorial serif typography currently used for headings. Keep all headings aligned and consistent across pages.
+
+Use tabular numerals for scores, marks, percentages, and analytics metrics where appropriate.
+
+### 4. Professional colour system
+
+Replace the current inconsistent or overly decorative styling with a restrained, accessible colour palette.
+
+Use CSS variables or the existing design-token mechanism where possible.
+
+Suggested palette:
+- Primary background: #F8FAFC
+- Main content surface: #FFFFFF
+- Primary text: #172B3A
+- Secondary text: #64748B
+- Primary action: #2563EB
+- Primary action hover: #1D4ED8
+- Borders and dividers: #E2E8F0
+- Subtle secondary background: #F1F5F9
+- Success: #15803D
+- Warning: #B45309
+- Error: #B91C1C
+
+Use colour purposefully. Keep most surfaces white or neutral, with blue for primary actions and restrained status colours for results.
+
+Avoid large coloured circles behind cards, decorative corner shapes, random accent colours, and coloured backgrounds that reduce readability.
+
+Ensure text and controls meet WCAG AA contrast requirements wherever practical.
+
+### 5. Sidebar and navigation
+
+Refine the existing sidebar without changing its navigation structure.
+
+- Use a clean, consistent background, preferably white or a very dark navy if it works better with the existing branding.
+- Use consistent icon sizes, stroke weights, spacing, and alignment.
+- Make the active navigation item clear using a subtle background and a restrained accent indicator.
+- Improve hover and focus states.
+- Keep navigation labels readable and consistent.
+- Align the brand logo, product name, and section labels neatly.
+- Make the sidebar visually compact without feeling crowded.
+- Preserve the existing profile or account section.
+- Ensure the sidebar works correctly on smaller screens.
+
+### 6. Dashboard and metric cards
+
+Refine the Overview dashboard cards, including Questions in Bank, Answers Evaluated, Mean Awarded, and Score Agreement.
+
+- Use consistent card heights, padding, borders, and alignment.
+- Remove decorative circles and unnecessary visual ornaments.
+- Make the main metric prominent but not oversized.
+- Keep the metric label and supporting text clearly separated.
+- Use subtle borders and, if needed, a very light shadow.
+- Avoid heavy shadows and excessive rounding.
+- Use consistent spacing between cards.
+- Keep the dashboard information hierarchy clear.
+
+Improve the Evidence Coverage and Recent Evaluations sections using the same design system.
+
+### 7. Tables and data presentation
+
+Tables are central to this application, so prioritise readability and information density.
+
+Apply the following improvements:
+- Clean table headers with subtle backgrounds or restrained uppercase labels.
+- Consistent row heights and cell padding.
+- Thin, light borders instead of heavy outlines.
+- Clear alignment of student names, question titles, scores, teacher marks, evaluation gaps, and dates.
+- Right-align numeric values where appropriate.
+- Use tabular numerals for marks and percentages.
+- Add subtle row-hover states.
+- Use restrained status badges with light backgrounds and readable text.
+- Prevent text from overlapping or becoming unnecessarily truncated.
+- Preserve horizontal scrolling on smaller screens when required.
+- Keep tables compact enough to display useful information without excessive scrolling.
+
+Do not remove columns or change how table data is calculated.
+
+### 8. Buttons, forms, filters, and badges
+
+Standardise all interactive components across the application.
+
+Buttons:
+- Consistent height, padding, font weight, and border radius.
+- Clear primary, secondary, tertiary, and destructive variants.
+- Subtle hover, focus, active, and disabled states.
+- Avoid oversized buttons or excessive pill-shaped styling.
+
+Inputs and dropdowns:
+- Consistent height, border colour, spacing, and typography.
+- Clear focus rings.
+- Readable placeholder text.
+- Consistent alignment of search icons and dropdown arrows.
+
+Badges:
+- Small, restrained, and easy to read.
+- Use consistent colours for success, warning, error, and neutral statuses.
+- Avoid large or highly saturated pills.
+
+Icons:
+- Use the icon library already installed in the project.
+- Standardise icon sizes, preferably around 16–18px for interface controls.
+- Do not introduce a new icon library unless absolutely necessary.
+
+### 9. Improve every existing page consistently
+
+Apply the same visual design system to all existing routes:
+
+- Overview
+- Question Bank
+- Evaluations
+- Fairness Lab
+- Rubric Studio
+- Reports
+- Scoring Method
+
+Do not redesign only the homepage. The entire application should look like one coherent, professionally designed product.
+
+Maintain the purpose and information hierarchy of each page. Improve the presentation of existing content rather than inventing new sections or functionality.
+
+### 10. Spacing, layout, and responsiveness
+
+- Establish a consistent spacing scale based on 4px or 8px increments.
+- Reduce excessive empty space and oversized vertical gaps.
+- Keep content aligned to a consistent page grid.
+- Use a sensible maximum content width where appropriate.
+- Ensure cards, tables, headings, filters, and action buttons align correctly.
+- Make the interface usable on desktop, laptop, tablet, and mobile screens.
+- Avoid horizontal overflow, overlapping elements, and clipped controls.
+- Preserve existing responsive behaviour while fixing any visual issues encountered.
+
+### 11. Implementation approach
+
+Follow this sequence:
+
+1. Inspect the existing project and identify the shared styling and component files.
+2. Identify reusable components that can be refined without changing their functionality.
+3. Create or refine shared design tokens for typography, colours, spacing, borders, shadows, and radii.
+4. Update the global typography and base styles.
+5. Refine the sidebar, page headers, cards, tables, buttons, forms, badges, and icons.
+6. Apply the improvements consistently to all existing routes.
+7. Test the website at desktop, tablet, and mobile widths.
+8. Check for CSS regressions, broken layouts, missing icons, console errors, and non-working interactions.
+9. Confirm that all existing routes, data, filters, forms, and grading workflows still function as before.
+
+Prefer editing existing CSS and shared components over introducing unnecessary dependencies or duplicating styles.
+
+### 12. Acceptance criteria
+
+The work is complete only when:
+
+- The original website and all its functionality remain intact.
+- The website has a consistent, professional typography and colour system.
+- The oversized serif headings and decorative AI-template styling have been removed or refined.
+- Dashboard cards and data tables are cleaner, more compact, and easier to scan.
+- All pages follow the same visual design language.
+- The interface remains responsive and accessible.
+- No existing routes, grading rules, APIs, or database structures have been broken.
+- The application builds and runs successfully.
+
+**Important final instruction:** This is a visual refinement of an existing product, not a new product build. Make the smallest set of well-planned changes necessary to achieve a substantial improvement in visual quality. Inspect before editing, preserve functionality, and do not rewrite working features just to achieve the new design.
