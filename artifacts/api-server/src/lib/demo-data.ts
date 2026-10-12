@@ -3,11 +3,13 @@ import {
   answersTable,
   db,
   graderMetaTable,
+  hasDatabaseUrl,
   questionsTable,
   type ConceptGroup,
   type MarkingPoint,
 } from "@workspace/db";
 import { evaluateAnswer } from "./grader";
+import { memoryStore } from "./memory-store";
 
 type QuestionSeed = {
   question: string;
@@ -262,6 +264,25 @@ let seedPromise: Promise<void> | undefined;
 export function ensureDemoData(): Promise<void> {
   if (!seedPromise) {
     seedPromise = (async () => {
+      if (!hasDatabaseUrl || !db) {
+        if (!memoryStore.isSeeded()) {
+          const sampleQuestion = questions[0];
+          const samples = benchmarkTexts.map((sample) => {
+            const grade = evaluateAnswer(sampleQuestion as any, sample.answer);
+            return {
+              questionId: 1,
+              studentName: sample.name,
+              answerText: sample.answer,
+              ...grade,
+              teacherScore: sample.teacherScore,
+              benchmark: true,
+            };
+          });
+          memoryStore.seed(questions as any, samples as any);
+        }
+        return;
+      }
+
       const existing = await db.select({ id: questionsTable.id }).from(questionsTable).limit(1);
       if (existing.length) {
         const [fixtureVersion] = await db

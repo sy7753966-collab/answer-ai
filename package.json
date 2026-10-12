@@ -2,17 +2,32 @@
   "name": "workspace",
   "version": "0.0.0",
   "license": "MIT",
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
-    "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
-    "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "build": "pnpm --filter @workspace/answer-grader run build && pnpm --filter @workspace/api-server run build",
+    "build:all": "pnpm run typecheck && pnpm -r --if-present run build",
+    "dev": "pnpm --filter @workspace/answer-grader run dev",
+    "start": "pnpm --filter @workspace/api-server run start",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
   },
   "private": true,
   "dependencies": {
-    "@replit/connectors-sdk": "^0.4.3"
+    "@replit/connectors-sdk": "^0.4.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "drizzle-orm": "^0.45.2",
+    "express": "^5.2.1",
+    "pg": "^8.23.0",
+    "pino": "^9.14.0",
+    "pino-http": "^10.5.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.3.3",
+    "@types/pg": "^8.23.1",
     "prettier": "^3.9.6",
     "typescript": "~5.9.3"
   }

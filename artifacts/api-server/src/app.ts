@@ -29,6 +29,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/", (_req, res) => {
+  res.json({ status: "ok", service: "ai-answer-grader-api" });
+});
+
 app.use("/api", router);
+app.use(router);
 
 export default app;
+

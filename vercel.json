@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "artifacts/answer-grader/dist/public",
+  "rewrites": [
+    {
+      "source": "/api",
+      "destination": "/api"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -24,8 +24,7 @@
 #     - react
 #     - typescript
 #
-# ============================================================================
-minimumReleaseAge: 1440
+minimumReleaseAge: 0
 
 minimumReleaseAgeExclude:
   # Exclude @replit scoped packages from the minimum release age check.
