@@ -29,11 +29,11 @@ An explainable, rubric-based student answer evaluation platform equipped with bi
 3. Import this GitHub repository (`answer-ai`).
 
 ### Step 2: Deployment Configuration
-Vercel automatically detects the configuration through `vercel.json`:
-- **Framework Preset**: Other (or Vite)
+Vercel automatically detects Vite:
+- **Framework Preset**: Vite
 - **Root Directory**: `./` (leave default)
-- **Build Command**: `pnpm run build`
-- **Output Directory**: `artifacts/answer-grader/dist/public`
+- **Build Command**: `vite build`
+- **Output Directory**: `dist`
 
 ### Step 3: Environment Variables (Optional)
 The application works immediately in zero-config mode. To persist data to PostgreSQL:
@@ -46,17 +46,13 @@ Click **Deploy**! 🎉
 ## 🛠️ Project Structure
 
 ```
-├── api/                    # Vercel Serverless Function entrypoint
-├── artifacts/
-│   ├── answer-grader/      # React + Vite frontend application
-│   └── api-server/         # Express API server with grading engine
-├── lib/
-│   ├── api-client-react/   # React Query hooks for API endpoints
-│   ├── api-spec/           # OpenAPI specification
-│   ├── api-zod/            # Zod validation schemas
-│   └── db/                 # Drizzle ORM schemas & database client
-├── vercel.json             # Vercel deployment routing & build config
-└── pnpm-workspace.yaml     # Monorepo workspace configuration
+├── api/                    # Vercel Serverless Function entrypoint (/api/*)
+├── server/                 # Express backend with rubric grading rule engine
+├── src/                    # React 19 + Tailwind CSS frontend application
+├── public/                 # Static assets (favicons, etc.)
+├── lib/                    # Shared API client and database contracts
+├── vite.config.ts          # Vite build configuration
+└── vercel.json             # Vercel SPA and API routing configuration
 ```
 
 ---
